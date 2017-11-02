@@ -36,6 +36,8 @@ public:
 	bool SendString(std::string str, Packet packetType = Packet::MsgSend);
 private:
 	// --- data fields ---
+	WSAData wsaData;
+	WORD DllVersion;
 	SOCKET connection;
 	SOCKADDR_IN addr; //Addres to bind connection socket to
 	int sizeOfAddr;

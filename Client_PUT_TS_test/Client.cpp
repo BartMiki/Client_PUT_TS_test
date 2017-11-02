@@ -4,8 +4,7 @@
 Client::Client(std::string IP, int PORT)
 {
 	//WinSock2 startup
-	WSAData wsaData;
-	WORD DllVersion = MAKEWORD(2, 2);
+	DllVersion = MAKEWORD(2, 2);
 
 	//if WSAStartup return anything other than 0, that means an error has occured
 	if (WSAStartup(DllVersion, &wsaData) != 0)
@@ -14,8 +13,7 @@ Client::Client(std::string IP, int PORT)
 		exit(0);
 	}
 	// --- Address setup ---
-	SOCKADDR_IN addr; //Addres to bind connection socket to
-	sizeOfAddr = sizeof(SOCKADDR_IN);
+	sizeOfAddr = sizeof(addr);
 	inet_pton(AF_INET, IP.c_str(), &(addr.sin_addr)); //Addres = local host (this PC)
 	addr.sin_port = htons(PORT); //Port ("htons" means "Host TO Network Short")
 	addr.sin_family = AF_INET; //IPv4 Socket
@@ -27,7 +25,7 @@ bool Client::Connect()
 {
 	// --- Connection socket ---
 	connection = socket(AF_INET, SOCK_STREAM, NULL); //Set connection socket
-	int code = connect(connection, (SOCKADDR*)&addr, sizeOfAddr);
+	int code = connect(connection, (SOCKADDR*)&addr, sizeof(addr));
 	if (code != 0) //If connecting to server failed
 	{
 		code = WSAGetLastError();
